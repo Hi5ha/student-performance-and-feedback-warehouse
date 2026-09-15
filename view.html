@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Record </title>
+</head>
+<style>
+    /* Record Card Styling */
+.record-card {
+    background: #fff;
+    padding: 20px;
+    width: 400px;
+    margin: auto;
+    border-radius: 10px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    line-height: 1.6;
+}
+
+.record-card p {
+    margin: 10px 0;
+    font-size: 16px;
+}
+
+.label {
+    font-weight: bold;
+    color: #007BFF;
+}
+
+.btn-back {
+    display: inline-block;
+    margin-top: 20px;
+    padding: 10px 15px;
+    background-color: #6c757d;
+    color: white;
+    text-decoration: none;
+    border-radius: 6px;
+    transition: background-color 0.3s ease;
+}
+
+.btn-back:hover {
+    background-color: #5a6268;
+}
+
+</style>
+<body>
+   {% extends "base.html" %}
+{% block content %}
+<h2> Student Record Details</h2>
+<div class="record-card">
+    <p><span class="label">ID:</span> {{ record[0] }}</p>
+    <p><span class="label">Name:</span> {{ record[1] }}</p>
+    <p><span class="label">Subject:</span> {{ record[2] }}</p>
+    <p><span class="label">Marks:</span> {{ record[3] }}</p>
+    <p><span class="label">Feedback:</span> {{ record[4] }}</p>
+    <p><span class="label">Sentiment:</span> {{ record[5] }}</p>
+</div>
+<a href="{{ url_for('index') }}" class="btn-back">⬅ Back to Records</a>
+{% endblock %}
+
+
+</body>
+</html>

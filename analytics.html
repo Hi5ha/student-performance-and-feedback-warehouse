@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Analytics Dashboard</title>
+</head>
+
+
+<body>
+
+{% extends "base.html" %}
+
+{% block content %}
+
+<h2 style="text-align:center; color:#007BFF;">
+     Analytics Dashboard
+</h2>
+
+<div style="width:700px; margin:auto; margin-top:30px;">
+    <h3>Average Marks per Subject</h3>
+    <canvas id="marksChart"></canvas>
+</div>
+
+<div style="width:500px; margin:auto; margin-top:50px;">
+    <h3>Feedback Sentiment Distribution</h3>
+    <canvas id="sentimentChart"></canvas>
+</div>
+
+
+<script type="application/json" id="avgMarksData">
+    {{ avg_marks | tojson }}
+</script>
+
+<script type="application/json" id="sentimentsData">
+    {{ sentiments | tojson }}
+</script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<script>
+
+    // Convert JSON data
+    let avgMarks = JSON.parse(
+        document.getElementById("avgMarksData").textContent
+    );
+
+    let sentiments = JSON.parse(
+        document.getElementById("sentimentsData").textContent
+    );
+
+    // Subject labels and marks
+    const subjectLabels = avgMarks.map(item => item[0]);
+    const subjectMarks = avgMarks.map(item => item[1]);
+
+    // Sentiment labels and counts
+    const sentimentLabels = sentiments.map(item => item[0]);
+    const sentimentCounts = sentiments.map(item => item[1]);
+
+    // Bar Chart
+    new Chart(document.getElementById('marksChart'), {
+        type: 'bar',
+        data: {
+            labels: subjectLabels,
+            datasets: [{
+                label: 'Average Marks',
+                data: subjectMarks,
+                backgroundColor: [
+                    '#007BFF',
+                    '#28A745',
+                    '#FFC107',
+                    '#DC3545',
+                    '#6610F2'
+                    
+                ],
+                borderWidth: 1
+            }]
+        },
+        options: {
+            responsive: true,
+            scales: {
+                y: {
+                    beginAtZero: true,
+                    max: 100
+                }
+            }
+        }
+    });
+
+    // Pie Chart
+    new Chart(document.getElementById('sentimentChart'), {
+        type: 'pie',
+        data: {
+            labels: sentimentLabels,
+            datasets: [{
+                data: sentimentCounts,
+                backgroundColor: [
+                    '#28A745',
+                    '#DC3545',
+                    '#FFC107'
+                ]
+            }]
+        },
+        options: {
+            responsive: true
+        }
+    });
+
+</script>
+
+{% endblock %}
+ 
+
+</body>
+</html>
